@@ -222,15 +222,17 @@ class QuadruplexFinder(object):
 
 		def revert_wrongs():
 			nonlocal total_wrongs, wrongNum
-			if (i >= 0) & (quadruplets[quadruplex_set[i]][1] != 0):
-				total_wrongs -= 1
-				if wrongNum == i+1:
-					for j in range(i):
-						if quadruplets[quadruplex_set[j]][1] != 0:
-							wrongNum == j+1
-							break
-				if wrongNum == i+1:
-					wrongNum = 0
+
+			if (i >= 0):
+				if (quadruplets[quadruplex_set[i]][1] != 0):
+					total_wrongs -= 1
+					if wrongNum == i+1:
+						for j in range(i):
+							if quadruplets[quadruplex_set[j]][1] != 0:
+								wrongNum == j+1
+								break
+					if wrongNum == i+1:
+						wrongNum = 0
 
 		quadruplexes = []
 		quadruplex_set = list(range(-1, self.nquadruplets))
@@ -339,7 +341,10 @@ class QuadruplexFinder(object):
 			if num_quad_now != 0:
 				quadruplex_now = quadruplex_now[:num_quad_now]
 			quadruplexes.extend(quadruplex_now)
-		quadruplexes.extend(quadruplex_next)
+		try:
+			quadruplexes.extend(quadruplex_next)
+		except:
+			pass
 		del quadruplexes_list_
 		return quadruplexes
 
@@ -616,7 +621,7 @@ def main():
 	args = parser.parse_args()
 	if not os.path.isdir(args.output):
 		os.mkdir(args.output)
-	args.output = os.path.dirname(args.output)
+	#args.output = os.path.dirname(args.output)
 	if args.verbose:
 		blockPrint()
 
